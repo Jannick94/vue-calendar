@@ -1,18 +1,16 @@
-# vue-calendar
+# Vue-calendar
 
-> A Vue.js project
+> This is a calendar build in vue.js to completely replace fullcalendar and sorts by providing a flexible and open calendar that can be easily customized to any specific use case.
 
-## Build Setup
+## Install instructions
 
 ``` bash
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# run a test build with a local live reload server
 npm run dev
 
 # build for production with minification
 npm run build
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
