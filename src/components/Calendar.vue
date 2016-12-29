@@ -15,7 +15,9 @@
       </div>
 
       <div class="v-cal-dates">
-        <div class="v-cal-day">01</div>
+        <day v-for="firstEmptyDay in firstEmptyDays"></day>
+        <day v-for="day in days"> {{ day | moment("DD") }} </day>
+        <day v-for="lastEmptyDay in lastEmptyDays"></day>
       </div>
     </div>
   </div>
@@ -23,16 +25,37 @@
 
 <script>
 import moment from 'moment';
+import Day from './Day';
 
 export default {
   name: 'calendar',
+  components: {
+    Day
+  },
+  created() {
+    moment.locale('nl');
+  },
   mounted() {
-
+    this.firstEmptyDays = this.getFirstDaysInMonth();
+    this.lastEmptyDays  = this.getLastDaysInMonth();
+    this.days           = this.getDaysInMonth();
   },
   data () {
     return {
       currentDate: moment(),
+      daysInMonth: 0,
+      firstEmptyDays: [],
+      lastEmptyDays: [],
+      days: [],
       weekDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    }
+  },
+  watch: {
+    currentDate: function(currentDate) {
+      this.firstEmptyDays = this.getFirstDaysInMonth();
+      this.lastEmptyDays  = this.getLastDaysInMonth();
+      this.days           = this.getDaysInMonth();
+      return moment(currentDate).daysInMonth();
     }
   },
   methods: {
@@ -43,11 +66,48 @@ export default {
     prevMonth() {
       this.currentDate = moment(this.currentDate).subtract('1', 'month');
     },
+
+    getDaysInMonth() {
+      let startOfMonth  = moment(this.currentDate).startOf('month');
+      let endOfMonth    = moment(this.currentDate).endOf('month');
+
+      let days = [];
+      let day = startOfMonth;
+
+      while (day <= endOfMonth) {
+          days.push(day.toDate());
+          day = day.clone().add(1, 'd');
+      }
+
+      return days;
+    },
+
+    getFirstDaysInMonth() {
+      let firstDays    = [];
+      let weekDay = this.currentDate.startOf('month').isoWeekday();
+
+      for (var i = 0; i < (weekDay - 1); i++) {
+        firstDays.push(i);
+      }
+
+      return firstDays;
+    },
+
+    getLastDaysInMonth() {
+      let lastDays    = [];
+      let weekDay = this.currentDate.endOf('month').isoWeekday();
+
+      for (var i = 0; i < (7 - weekDay); i++) {
+        lastDays.push(i);
+      }
+
+      return lastDays;
+    }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   *:before, *:after, *  {
     box-sizing: border-box;
   }
@@ -80,6 +140,14 @@ export default {
 
       .v-cal-dates {
         display: flex;
+        flex-wrap: wrap;
+
+        .v-cal-date {
+          flex-basis: 14.2857142857%;
+          text-align: center;
+          border: 1px solid #000;
+          padding: 10px;
+        }
       }
 
     }
