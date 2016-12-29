@@ -1,11 +1,11 @@
 <template>
   <div class="v-cal">
     <div class="v-cal-heading">
-      <div class="v-cal-prev" @click="prevMonth()">prev</div>
-      <div class="v-cal-date">
+      <button type="button" class="v-cal-prev" @click="prevMonth()">&larr;</button>
+      <h4 class="v-cal-date">
         {{ currentDate | moment("MMMM YYYY") }}
-      </div>
-      <div class="v-cal-next" @click="nextMonth()">next</div>
+      </h4>
+      <button type="button" class="v-cal-next" @click="nextMonth()">&rarr;</button>
     </div>
     <div class="v-cal-body">
       <div class="v-cal-weekdays">
@@ -15,9 +15,9 @@
       </div>
 
       <div class="v-cal-dates">
-        <day v-for="firstEmptyDay in firstEmptyDays"></day>
-        <day v-for="day in days"> {{ day | moment("DD") }} </day>
-        <day v-for="lastEmptyDay in lastEmptyDays"></day>
+        <day class="empty" v-for="firstEmptyDay in firstEmptyDays"></day>
+        <day :date="day" v-for="day in days"> {{ day | moment("DD") }} </day>
+        <day class="empty" v-for="lastEmptyDay in lastEmptyDays"></day>
       </div>
     </div>
   </div>
@@ -113,16 +113,32 @@ export default {
   }
 
   .v-cal {
-    border: 1px solid #000;
+    font-family: sans-serif;
     display: flex;
     width: 100%;
-    padding: 20px;
     flex-direction: column;
 
     .v-cal-heading {
       display: flex;
       flex: 1;
       justify-content: space-between;
+
+      .v-cal-prev, .v-cal-next {
+        padding: 10px;
+        font-size: 24px;
+        align-self: center;
+        border: 0;
+        background-color: transparent;
+        outline: 0;
+
+        &:hover {
+          background-color: #eee;
+        }
+
+        &:active {
+          background-color: #ddd;
+        }
+      }
     }
 
     .v-cal-body {
@@ -131,6 +147,8 @@ export default {
       .v-cal-weekdays {
         display: flex;
         flex-wrap: wrap;
+        color: rgba(0,0,0,0.58);
+        margin-bottom: 20px;
 
         .v-cal-weekday {
           flex-basis: 14.2857142857%;
@@ -145,8 +163,34 @@ export default {
         .v-cal-date {
           flex-basis: 14.2857142857%;
           text-align: center;
-          border: 1px solid #000;
           padding: 10px;
+          height: 100px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          user-select: none;
+          cursor: pointer;
+
+          &:hover:not(.empty) {
+            .v-cal-day {
+              background-color: #eee;
+            }
+          }
+          &:active:not(.empty) {
+            .v-cal-day {
+              background-color: #ddd;
+            }
+          }
+
+          .v-cal-day {
+            border-radius: 50%;
+            padding: 10px;
+            transition: background-color .15s ease-in-out;
+
+            &.today {
+              background-color: gold;
+            }
+          }
         }
       }
 
