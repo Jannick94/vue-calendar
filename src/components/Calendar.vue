@@ -1,11 +1,11 @@
 <template>
   <div class="v-cal">
     <div class="v-cal-heading">
-      <button type="button" class="v-cal-prev" @click="prevMonth()">&larr;</button>
+      <button type="button" class="v-cal-prev" v-show="showPrevMonth" @click="prevMonth()">&larr;</button>
       <h4 class="v-cal-date">
         {{ currentDate | moment("MMMM YYYY") }}
       </h4>
-      <button type="button" class="v-cal-next" @click="nextMonth()">&rarr;</button>
+      <button type="button" class="v-cal-next" v-show="showNextMonth" @click="nextMonth()">&rarr;</button>
     </div>
     <div class="v-cal-body">
       <div class="v-cal-weekdays">
@@ -16,7 +16,7 @@
 
       <div class="v-cal-dates">
         <day class="empty" v-for="firstEmptyDay in firstEmptyDays"></day>
-        <day :date="day" v-for="day in days"> {{ day | moment("DD") }} </day>
+        <day :date="day" v-for="day in days"> {{ ((day)? day.format('DD') : '') }} </day>
         <day class="empty" v-for="lastEmptyDay in lastEmptyDays"></day>
       </div>
     </div>
@@ -36,22 +36,28 @@ export default {
     moment.locale('nl');
   },
   mounted() {
-    this.firstEmptyDays = this.getFirstDaysInMonth();
-    this.lastEmptyDays  = this.getLastDaysInMonth();
-    this.days           = this.getDaysInMonth();
+    this.calStart       = (this.start)? moment(this.start) : false;
+    this.calEnd         = (this.end)? moment(this.end) : false;
+    this.currentDate    = moment();
   },
+  props: ['start', 'end'],
   data () {
     return {
       currentDate: moment(),
-      daysInMonth: 0,
       firstEmptyDays: [],
       lastEmptyDays: [],
       days: [],
-      weekDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+      weekDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      calStart: false,
+      calEnd: false,
+      showPrevMonth: true,
+      showNextMonth: true,
     }
   },
   watch: {
     currentDate: function(currentDate) {
+      this.showPrevMonth  = this.shouldShowPrevMonth();
+      this.showNextMonth  = this.shouldShowNextMonth();
       this.firstEmptyDays = this.getFirstDaysInMonth();
       this.lastEmptyDays  = this.getLastDaysInMonth();
       this.days           = this.getDaysInMonth();
@@ -59,12 +65,32 @@ export default {
     }
   },
   methods: {
-    nextMonth() {
-      this.currentDate = moment(this.currentDate).add('1', 'month');
+    shouldShowPrevMonth() {
+      if (this.currentDate.clone().subtract(1, 'months').endOf('month').isBefore(this.calStart)){
+        return false;
+      }
+
+      return true;
+    },
+
+    shouldShowNextMonth() {
+      if (this.currentDate.clone().add(1, 'months').startOf('month').isAfter(this.calEnd)){
+        return false;
+      }
+
+      return true;
     },
 
     prevMonth() {
-      this.currentDate = moment(this.currentDate).subtract('1', 'month');
+      if (this.shouldShowPrevMonth()){
+        this.currentDate = moment(this.currentDate).subtract('1', 'month');
+      }
+    },
+
+    nextMonth() {
+      if (this.shouldShowNextMonth()){
+        this.currentDate = moment(this.currentDate).add('1', 'month');
+      }
     },
 
     getDaysInMonth() {
@@ -75,7 +101,13 @@ export default {
       let day = startOfMonth;
 
       while (day <= endOfMonth) {
-          days.push(day.toDate());
+          if (this.calStart && day.isBefore(this.calStart)) {
+            days.push(false);
+          } else if (this.calEnd && day.isAfter(this.calEnd)) {
+            days.push(false);
+          } else {
+            days.push(day);
+          }
           day = day.clone().add(1, 'd');
       }
 

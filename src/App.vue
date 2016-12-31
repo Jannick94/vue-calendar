@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <calendar></calendar>
+    <calendar start="2016-01-05" end= "2016-12-26"></calendar>
   </div>
 </template>
 
