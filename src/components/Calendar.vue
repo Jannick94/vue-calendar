@@ -16,7 +16,12 @@
 
       <div class="v-cal-dates">
         <day class="empty" v-for="firstEmptyDay in firstEmptyDays"></day>
-        <day :date="day.date" v-for="day in days" :class="((!day.active) ? 'day-disabled' : '')"> {{ ((day.date)? day.date.format('DD') : '') }} </day>
+        <day v-for="day in days"
+             :date="day.date.format('DD-MM-YYYY')"
+             :class="((!day.active) ? 'day-disabled' : '')"
+        >
+          {{ ((day.date)? day.date.format('DD') : '') }}
+        </day>
         <day class="empty" v-for="lastEmptyDay in lastEmptyDays"></day>
       </div>
     </div>
@@ -34,7 +39,7 @@ export default {
     Day
   },
   created() {
-    moment.locale('nl');
+    Event.$on('dayClicked', (date) => this.onDayClick(date));
   },
   mounted() {
     this.calStart       = (this.start)? moment(this.start) : false;
@@ -149,6 +154,10 @@ export default {
       }
 
       return lastDays;
+    },
+
+    onDayClick(date) {
+      console.log(date);
     }
   }
 }
