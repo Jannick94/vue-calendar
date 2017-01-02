@@ -38,7 +38,7 @@ export default {
   mounted() {
     this.calStart       = (this.start)? moment(this.start) : false;
     this.calEnd         = (this.end)? moment(this.end) : false;
-    this.currentDate    = moment();
+    this.currentDate    = this.getCurrentDate();
   },
   props: ['start', 'end'],
   data () {
@@ -65,6 +65,20 @@ export default {
     }
   },
   methods: {
+    getCurrentDate() {
+      var currentDate = moment();
+
+      if (currentDate.isBefore(this.calStart)) {
+        currentDate = this.calStart.clone();
+      }
+
+      if (currentDate.isAfter(this.calEnd)){
+        currentDate = this.calEnd.clone();
+      }
+
+      return currentDate;
+    },
+
     shouldShowPrevMonth() {
       if (this.currentDate.clone().subtract(1, 'months').endOf('month').isBefore(this.calStart)){
         return false;
