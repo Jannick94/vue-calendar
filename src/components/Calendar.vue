@@ -3,7 +3,7 @@
     <div class="v-cal-heading">
       <button type="button" class="v-cal-prev" v-show="showPrevMonth" @click="prevMonth()">&larr;</button>
       <h4 class="v-cal-date">
-        {{ currentDate | moment("MMMM YYYY") }}
+        {{ currentDate.format('MMMM YYYY') }}
       </h4>
       <button type="button" class="v-cal-next" v-show="showNextMonth" @click="nextMonth()">&rarr;</button>
     </div>
@@ -16,7 +16,7 @@
 
       <div class="v-cal-dates">
         <day class="empty" v-for="firstEmptyDay in firstEmptyDays"></day>
-        <day :date="day" v-for="day in days"> {{ ((day)? day.format('DD') : '') }} </day>
+        <day :date="day.date" v-for="day in days" :class="((!day.active) ? 'day-disabled' : '')"> {{ ((day.date)? day.date.format('DD') : '') }} </day>
         <day class="empty" v-for="lastEmptyDay in lastEmptyDays"></day>
       </div>
     </div>
@@ -116,11 +116,11 @@ export default {
 
       while (day <= endOfMonth) {
           if (this.calStart && day.isBefore(this.calStart)) {
-            days.push(false);
+            days.push({ date: day, active: false });
           } else if (this.calEnd && day.isAfter(this.calEnd)) {
-            days.push(false);
+            days.push({ date: day, active: false });
           } else {
-            days.push(day);
+            days.push({ date: day, active: true });
           }
           day = day.clone().add(1, 'd');
       }
@@ -169,6 +169,10 @@ export default {
       flex: 1;
       justify-content: space-between;
 
+      .v-cal-date {
+        margin: auto;
+      }
+
       .v-cal-prev, .v-cal-next {
         padding: 10px;
         font-size: 24px;
@@ -215,11 +219,15 @@ export default {
           justify-content: center;
           align-items: center;
           user-select: none;
-          cursor: pointer;
 
-          &:hover:not(.empty) {
+          &.day-disabled {
+            color: #ddd;
+          }
+
+          &:hover:not(.empty):not(.day-disabled) {
             .v-cal-day {
               background-color: #eee;
+              cursor: pointer;
             }
           }
           &:active:not(.empty) {
