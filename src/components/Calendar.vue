@@ -26,6 +26,7 @@
 <script>
 import moment from 'moment';
 import Day from './Day';
+import Lang from './../lang/nl';
 
 export default {
   name: 'calendar',
@@ -47,7 +48,7 @@ export default {
       firstEmptyDays: [],
       lastEmptyDays: [],
       days: [],
-      weekDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      weekDays: Lang.days,
       calStart: false,
       calEnd: false,
       showPrevMonth: true,
