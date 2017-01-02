@@ -10,7 +10,7 @@
 		props: ['date'],
 		methods: {
 			onDayClick(date) {
-				console.log('Clicked on day');
+				Event.$emit('dayClicked', date);
 			}
 		}
 	}
