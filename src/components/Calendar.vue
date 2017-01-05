@@ -18,7 +18,9 @@
         <day class="empty" v-for="firstEmptyDay in firstEmptyDays"></day>
         <day v-for="day in days"
              :date="day.date.format('DD-MM-YYYY')"
+             :active="day.active"
              :class="((!day.active) ? 'day-disabled' : '')"
+             :events="day.events"
         >
           {{ ((day.date)? day.date.format('DD') : '') }}
         </day>
@@ -29,24 +31,36 @@
 </template>
 
 <script>
+import Vue    from 'vue';
 import moment from 'moment';
-import Day from './Day';
-import Lang from './../lang/nl';
+import Day    from './Day';
+import Lang   from './../lang/nl';
+
+window.Event = new Vue({});
 
 export default {
   name: 'calendar',
   components: {
     Day
   },
-  created() {
-    Event.$on('dayClicked', (date) => this.onDayClick(date));
+  props: {
+    start: {
+      type: String
+    },
+    end: {
+      type: String
+    },
+    events: {
+      type: Array
+    }
   },
   mounted() {
-    this.calStart       = (this.start)? moment(this.start) : false;
-    this.calEnd         = (this.end)? moment(this.end) : false;
-    this.currentDate    = this.getCurrentDate();
+    console.clear();
+
+    this.calStart    = (this.start)? moment(this.start) : false;
+    this.calEnd      = (this.end)? moment(this.end) : false;
+    this.currentDate = this.getCurrentDate();
   },
-  props: ['start', 'end'],
   data () {
     return {
       currentDate: moment(),
@@ -126,8 +140,14 @@ export default {
           } else if (this.calEnd && day.isAfter(this.calEnd)) {
             days.push({ date: day, active: false });
           } else {
-            days.push({ date: day, active: true });
+            let formatted = day.clone().format('YYYY-MM-DD');
+            let events = this.events.filter( (d) => {
+              return d.date == formatted;
+            });
+
+            days.push({ date: day, active: true, events });
           }
+
           day = day.clone().add(1, 'd');
       }
 
@@ -154,10 +174,6 @@ export default {
       }
 
       return lastDays;
-    },
-
-    onDayClick(date) {
-      console.log(date);
     }
   }
 }
@@ -229,6 +245,7 @@ export default {
           justify-content: center;
           align-items: center;
           user-select: none;
+          flex-direction: column;
 
           &.day-disabled {
             color: #ddd;
