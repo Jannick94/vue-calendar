@@ -3,8 +3,8 @@
 		<div class="v-cal-day">
 			<slot></slot>
 		</div>
-		<div class="v-cal-day-events" v-for="event in events">
-			{{event.title}}
+		<div class="v-cal-day-events">
+			<div class="v-cal-day-event" v-for="event in events">{{event.title}}</div>
 		</div>
 	</div>
 </template>

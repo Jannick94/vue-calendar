@@ -17,7 +17,11 @@ export default {
       events: [
         { title: 'Test Event', date: '2016-12-20' },
         { title: 'Test Event 2', date: '2016-12-20' },
+        { title: 'Test Event', date: '2016-12-26' },
+        { title: 'Test Event 2', date: '2016-12-25' },
         { title: 'Test Event 3', date: '2016-12-22' },
+        { title: 'Test Event 3', date: '2016-12-08' },
+        { title: 'Test Event 3', date: '2016-11-22' },
       ]
     }
   },

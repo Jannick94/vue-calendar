@@ -242,8 +242,8 @@ export default {
           padding: 10px;
           height: 100px;
           display: flex;
-          justify-content: center;
-          align-items: center;
+          justify-content: flex-start;
+          align-items: flex-start;
           user-select: none;
           flex-direction: column;
 
@@ -270,6 +270,18 @@ export default {
 
             &.today {
               background-color: gold;
+            }
+          }
+
+          .v-cal-day-events {
+
+            .v-cal-day-event {
+              font-size: 12px;
+              background-color: #1976D2;
+              padding: 2px 4px;
+              border-radius: 4px;
+              margin-bottom: 5px;
+              color: #fff;
             }
           }
         }
