@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       events: [
-        { title: 'Test Event', date: '2016-12-20' },
+        { title: 'Test Event', date: '2016-12-20', bgColor: '#f00' },
         { title: 'Test Event 2', date: '2016-12-20' },
         { title: 'Test Event', date: '2016-12-26' },
         { title: 'Test Event 2', date: '2016-12-25' },
