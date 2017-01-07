@@ -39,20 +39,18 @@
       user-select: none;
       flex-direction: column;
 
-      &.day-disabled {
-        color: #ddd;
+      &.today {
+      	.v-cal-day {
+      		background-color: #FFEB3B;
+
+					&:hover {
+						background-color: #FDD835;
+					}
+      	}
       }
 
-      &:hover:not(.empty):not(.day-disabled) {
-        .v-cal-day {
-          background-color: #eee;
-          cursor: pointer;
-        }
-      }
-      &:active:not(.empty) {
-        .v-cal-day {
-          background-color: #ddd;
-        }
+      &.day-disabled {
+        color: #ddd;
       }
 
       .v-cal-day {
@@ -60,8 +58,8 @@
         padding: 10px;
         transition: background-color .15s ease-in-out;
 
-        &.today {
-          background-color: gold;
+        &:hover {
+        	background-color: #eee;
         }
       }
 

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <calendar start="2016-01-05" end="2016-12-26" :events="events" @dayClick="onDayClick(date)"></calendar>
+    <calendar start="2017-01-05" end="2017-12-26" :events="events" @dayClick="onDayClick(date)"></calendar>
   </div>
 </template>
 
@@ -15,13 +15,13 @@ export default {
   data() {
     return {
       events: [
-        { title: 'Test Event', date: '2016-12-20', bgColor: 'green' },
-        { title: 'Test Event 2', date: '2016-12-20' },
-        { title: 'Test Event', date: '2016-12-26' },
-        { title: 'Test Event 2', date: '2016-12-25' },
-        { title: 'Test Event 3', date: '2016-12-22' },
-        { title: 'Test Event 3', date: '2016-12-08', bgColor: 'orange' },
-        { title: 'Test Event 3', date: '2016-11-22' },
+        { title: 'Test Event', date: '2017-01-20', bgColor: 'green' },
+        { title: 'Test Event 2', date: '2017-01-20' },
+        { title: 'Test Event', date: '2017-01-26' },
+        { title: 'Test Event 2', date: '2017-01-25' },
+        { title: 'Test Event 3', date: '2017-01-22' },
+        { title: 'Test Event 3', date: '2017-01-08', bgColor: 'orange' },
+        { title: 'Test Event 3', date: '2017-11-22' },
       ]
     }
   },

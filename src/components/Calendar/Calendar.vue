@@ -8,7 +8,7 @@
         <day v-for="day in days"
              :date="day.date.format('DD-MM-YYYY')"
              :active="day.active"
-             :class="((!day.active) ? 'day-disabled' : '')"
+             :class="{ 'day-disabled': !day.active, 'today': day.date.isSame(today, 'day') }"
              :events="day.events"
         >
           {{ ((day.date)? day.date.format('DD') : '') }}
@@ -55,6 +55,7 @@ export default {
   data () {
     return {
       currentDate: moment(),
+      today: moment(),
       firstEmptyDays: [],
       lastEmptyDays: [],
       days: [],
@@ -106,8 +107,8 @@ export default {
     },
 
     getDaysInMonth() {
-      let startOfMonth  = moment(this.currentDate).startOf('month');
-      let endOfMonth    = moment(this.currentDate).endOf('month');
+      let startOfMonth  = moment(this.currentDate).clone().startOf('month');
+      let endOfMonth    = moment(this.currentDate).clone().endOf('month');
 
       let days = [];
       let day = startOfMonth;
@@ -138,7 +139,7 @@ export default {
 
     getFirstDaysInMonth() {
       let firstDays    = [];
-      let weekDay = this.currentDate.startOf('month').isoWeekday();
+      let weekDay = this.currentDate.clone().startOf('month').isoWeekday();
 
       for (var i = 0; i < (weekDay - 1); i++) {
         firstDays.push(i);
@@ -149,7 +150,7 @@ export default {
 
     getLastDaysInMonth() {
       let lastDays    = [];
-      let weekDay = this.currentDate.endOf('month').isoWeekday();
+      let weekDay = this.currentDate.clone().endOf('month').isoWeekday();
 
       for (var i = 0; i < (7 - weekDay); i++) {
         lastDays.push(i);
