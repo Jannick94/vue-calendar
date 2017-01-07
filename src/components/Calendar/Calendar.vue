@@ -1,19 +1,8 @@
 <template>
   <div class="v-cal">
-    <div class="v-cal-heading">
-      <button type="button" class="v-cal-prev" v-show="showPrevMonth" @click="prevMonth()">&larr;</button>
-      <h4 class="v-cal-date">
-        {{ currentDate.format('MMMM YYYY') }}
-      </h4>
-      <button type="button" class="v-cal-next" v-show="showNextMonth" @click="nextMonth()">&rarr;</button>
-    </div>
+    <calendar-header></calendar-header>
     <div class="v-cal-body">
-      <div class="v-cal-weekdays">
-        <div class="v-cal-weekday" v-for="weekDay in weekDays">
-          {{ weekDay }}
-        </div>
-      </div>
-
+      <weekdays></weekdays>
       <div class="v-cal-dates">
         <day class="empty" v-for="firstEmptyDay in firstEmptyDays"></day>
         <day v-for="day in days"
@@ -33,15 +22,19 @@
 <script>
 import Vue    from 'vue';
 import moment from 'moment';
+
+import CalendarHeader from './Header';
+import Weekdays from './Weekdays';
 import Day    from './Day';
-import Lang   from './../lang/nl';
 
 window.Event = new Vue({});
 
 export default {
   name: 'calendar',
   components: {
-    Day
+    Day,
+    CalendarHeader,
+    Weekdays
   },
   props: {
     start: {
@@ -55,8 +48,6 @@ export default {
     }
   },
   mounted() {
-    console.clear();
-
     this.calStart    = (this.start)? moment(this.start) : false;
     this.calEnd      = (this.end)? moment(this.end) : false;
     this.currentDate = this.getCurrentDate();
@@ -67,7 +58,6 @@ export default {
       firstEmptyDays: [],
       lastEmptyDays: [],
       days: [],
-      weekDays: Lang.days,
       calStart: false,
       calEnd: false,
       showPrevMonth: true,
@@ -115,18 +105,6 @@ export default {
       return true;
     },
 
-    prevMonth() {
-      if (this.shouldShowPrevMonth()){
-        this.currentDate = moment(this.currentDate).subtract('1', 'month');
-      }
-    },
-
-    nextMonth() {
-      if (this.shouldShowNextMonth()){
-        this.currentDate = moment(this.currentDate).add('1', 'month');
-      }
-    },
-
     getDaysInMonth() {
       let startOfMonth  = moment(this.currentDate).startOf('month');
       let endOfMonth    = moment(this.currentDate).endOf('month');
@@ -141,9 +119,13 @@ export default {
             days.push({ date: day, active: false });
           } else {
             let formatted = day.clone().format('YYYY-MM-DD');
-            let events = this.events.filter( (d) => {
-              return d.date == formatted;
-            });
+            let events;
+
+            if (this.events) {
+              events = this.events.filter( (d) => {
+                return d.date == formatted;
+              });
+            }
 
             days.push({ date: day, active: true, events });
           }
@@ -190,103 +172,8 @@ export default {
     width: 100%;
     flex-direction: column;
 
-    .v-cal-heading {
-      display: flex;
-      flex: 1;
-      justify-content: space-between;
-
-      .v-cal-date {
-        margin: auto;
-      }
-
-      .v-cal-prev, .v-cal-next {
-        padding: 10px;
-        font-size: 24px;
-        align-self: center;
-        border: 0;
-        background-color: transparent;
-        outline: 0;
-
-        &:hover {
-          background-color: #eee;
-        }
-
-        &:active {
-          background-color: #ddd;
-        }
-      }
-    }
-
     .v-cal-body {
       margin-top: 20px;
-
-      .v-cal-weekdays {
-        display: flex;
-        flex-wrap: wrap;
-        color: rgba(0,0,0,0.58);
-        margin-bottom: 20px;
-
-        .v-cal-weekday {
-          flex-basis: 14.2857142857%;
-          text-align: center;
-        }
-      }
-
-      .v-cal-dates {
-        display: flex;
-        flex-wrap: wrap;
-
-        .v-cal-date {
-          flex-basis: 14.2857142857%;
-          text-align: center;
-          padding: 10px;
-          height: 100px;
-          display: flex;
-          justify-content: flex-start;
-          align-items: flex-start;
-          user-select: none;
-          flex-direction: column;
-
-          &.day-disabled {
-            color: #ddd;
-          }
-
-          &:hover:not(.empty):not(.day-disabled) {
-            .v-cal-day {
-              background-color: #eee;
-              cursor: pointer;
-            }
-          }
-          &:active:not(.empty) {
-            .v-cal-day {
-              background-color: #ddd;
-            }
-          }
-
-          .v-cal-day {
-            border-radius: 50%;
-            padding: 10px;
-            transition: background-color .15s ease-in-out;
-
-            &.today {
-              background-color: gold;
-            }
-          }
-
-          .v-cal-day-events {
-
-            .v-cal-day-event {
-              font-size: 12px;
-              background-color: #1976D2;
-              padding: 2px 4px;
-              border-radius: 4px;
-              margin-bottom: 5px;
-              color: #fff;
-            }
-          }
-        }
-      }
-
     }
 
   }
