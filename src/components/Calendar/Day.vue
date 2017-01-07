@@ -57,6 +57,7 @@
         border-radius: 50%;
         padding: 10px;
         transition: background-color .15s ease-in-out;
+        cursor: pointer;
 
         &:hover {
         	background-color: #eee;

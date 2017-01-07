@@ -11,7 +11,7 @@
              :class="{ 'day-disabled': !day.active, 'today': day.date.isSame(today, 'day') }"
              :events="day.events"
         >
-          {{ ((day.date)? day.date.format('DD') : '') }}
+          {{ day.date.format('DD') }}
         </day>
         <day class="empty" v-for="lastEmptyDay in lastEmptyDays"></day>
       </div>
