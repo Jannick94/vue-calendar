@@ -1,22 +1,39 @@
 <template>
-	<div class="v-cal-date" @click="onDayClick(date)" :date="date" :active="active" :events="events">
-		<div class="v-cal-day">
+	<div class="v-cal-date"
+			:date="date"
+			:active="active"
+			:events="events"
+		>
+		<calendar-modal :events="events"></calendar-modal>
+		<div class="v-cal-day" @click="onDayClick(date)">
 			<slot></slot>
 		</div>
-		<div class="v-cal-day-events">
-			<div class="v-cal-day-event" v-for="event in events" :style="{ backgroundColor: event.bgColor }">{{ event.title }}</div>
+		<div class="v-cal-day-events" v-if="events">
+			<div class="v-cal-day-event"
+					 v-for="event in events"
+					 :style="{ backgroundColor: event.bgColor }"
+			>
+				{{ event.title }}
+			</div>
+			<small class="v-cal-event-show-more" v-if="events.length > 3">more</small>
 		</div>
 	</div>
 </template>
 
 <script>
+	import CalendarModal from './CalendarModal';
+
 	export default {
 		name: 'day',
+		components: {
+			CalendarModal
+		},
 		props: ['date', 'active', 'events'],
 		methods: {
 			onDayClick(date) {
 				if (this.active) {
 					Event.$emit('dayClicked', date);
+					this.$children[0].toggleModal();
 				}
 			}
 		}

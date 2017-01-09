@@ -1,17 +1,12 @@
 <template>
   <div id="app">
-    <calendar start="2017-01-05" end="2017-12-26" :events="events" @dayClick="onDayClick(date)"></calendar>
+    <calendar start="2017-01-05" end="2017-12-26" :events="events" @dayClick="onDayClick(day)"></calendar>
   </div>
 </template>
 
 <script>
-import Calendar from './components/Calendar/Calendar.vue'
-
 export default {
   name: 'app',
-  components: {
-    Calendar
-  },
   data() {
     return {
       events: [
@@ -20,17 +15,17 @@ export default {
         { title: 'Test Event', date: '2017-01-26' },
         { title: 'Test Event 2', date: '2017-01-25' },
         { title: 'Test Event 3', date: '2017-01-22' },
-        { title: 'Test Event 3', date: '2017-01-08', bgColor: 'orange' },
+        { title: 'Test Event 3', date: '2017-01-08', bgColor: '#000' },
         { title: 'Test Event 3', date: '2017-11-22' },
       ]
     }
   },
   created() {
-    Event.$on('dayClicked', (date) => this.onDayClick(date));
+    Event.$on('dayClicked', (day) => this.onDayClick(day));
   },
   methods: {
-    onDayClick(date) {
-      console.log(date);
+    onDayClick(day) {
+      console.log(day.events);
     }
   }
 }

@@ -3,8 +3,9 @@
 import Vue from 'vue';
 import App from './App';
 
-/* Event bus */
-window.Event = new Vue({});
+import VueCalendar from './VueCalendar'
+
+Vue.use(VueCalendar);
 
 /* eslint-disable no-new */
 new Vue({
@@ -12,3 +13,4 @@ new Vue({
   template: '<App/>',
   components: { App }
 });
+

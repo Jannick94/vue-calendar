@@ -6,7 +6,7 @@
       <div class="v-cal-dates">
         <day class="empty" v-for="firstEmptyDay in firstEmptyDays"></day>
         <day v-for="day in days"
-             :date="day.date.format('DD-MM-YYYY')"
+             :date="day"
              :active="day.active"
              :class="{ 'day-disabled': !day.active, 'today': day.date.isSame(today, 'day') }"
              :events="day.events"
@@ -20,14 +20,11 @@
 </template>
 
 <script>
-import Vue    from 'vue';
 import moment from 'moment';
 
 import CalendarHeader from './Header';
-import Weekdays from './Weekdays';
-import Day    from './Day';
-
-window.Event = new Vue({});
+import Weekdays       from './Weekdays';
+import Day            from './Day';
 
 export default {
   name: 'calendar',
@@ -62,7 +59,7 @@ export default {
       calStart: false,
       calEnd: false,
       showPrevMonth: true,
-      showNextMonth: true,
+      showNextMonth: true
     }
   },
   watch: {
@@ -77,7 +74,7 @@ export default {
   },
   methods: {
     getCurrentDate() {
-      var currentDate = moment();
+      let currentDate = moment();
 
       if (currentDate.isBefore(this.calStart)) {
         currentDate = this.calStart.clone();
@@ -115,9 +112,9 @@ export default {
 
       while (day <= endOfMonth) {
           if (this.calStart && day.isBefore(this.calStart)) {
-            days.push({ date: day, active: false });
+            days.push({ date: day, active: false, events: [] });
           } else if (this.calEnd && day.isAfter(this.calEnd)) {
-            days.push({ date: day, active: false });
+            days.push({ date: day, active: false, events: [] });
           } else {
             let formatted = day.clone().format('YYYY-MM-DD');
             let events;
