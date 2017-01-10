@@ -5,7 +5,7 @@ import Calendar from './components/Calendar/Calendar.vue';
 window.Event = new Vue({});
 
 const VueCalendar = {
-	install(Vue) {
+	install(Vue, options) {
 		Vue.component('calendar', Calendar);
 	}
 }

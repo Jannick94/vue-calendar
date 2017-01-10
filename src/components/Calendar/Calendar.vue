@@ -34,6 +34,10 @@ export default {
     Weekdays
   },
   props: {
+    options: {
+      type: Object,
+      default: () => {}
+    },
     start: {
       type: String
     },
@@ -43,6 +47,9 @@ export default {
     events: {
       type: Array
     }
+  },
+  created() {
+    console.log(this.options.shortEvents);
   },
   mounted() {
     this.calStart    = (this.start)? moment(this.start) : false;

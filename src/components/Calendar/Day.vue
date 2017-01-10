@@ -33,7 +33,10 @@
 			onDayClick(date) {
 				if (this.active) {
 					Event.$emit('dayClicked', date);
-					this.$children[0].toggleModal();
+
+					if (date.events.length) {
+						this.$children[0].toggleModal();
+					}
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <calendar start="2017-01-05" end="2017-12-26" :events="events" @dayClick="onDayClick(day)"></calendar>
+    <calendar :options="calendarOptions" start="2017-01-05" end="2017-12-26" :events="events" @dayClick="onDayClick(day)"></calendar>
   </div>
 </template>
 
@@ -9,6 +9,9 @@ export default {
   name: 'app',
   data() {
     return {
+      calendarOptions: {
+        shortEvents: true
+      },
       events: [
         { title: 'Test Event', date: '2017-01-20', bgColor: 'green' },
         { title: 'Test Event 2', date: '2017-01-20' },
