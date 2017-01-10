@@ -64,9 +64,9 @@
 
 	    .v-cal-modal-close {
 	    	position: absolute;
-	    	top: 5px;
-	    	right: 5px;
-	    	background-color: rgba(10, 10, 10, 0.2);
+	    	top: -10px;
+	    	right: -10px;
+	    	background-color: rgba(10, 10, 10, 0.7);
 		    border: none;
 		    border-radius: 50%;
 		    cursor: pointer;
@@ -77,10 +77,10 @@
 		    text-align: center;
 		   	color: #fff;
 		   	outline: 0;
-		   	line-height: 20px;
+		   	line-height: 21px;
 
 		   	&:hover {
-		   		background-color: rgba(10, 10, 10, 0.3);
+		   		background-color: rgba(10, 10, 10, 0.8);
 		   	}
 	    }
 
